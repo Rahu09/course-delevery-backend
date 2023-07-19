@@ -10,7 +10,9 @@
   },
   "scripts": {
     "start":"nodemon 04-course-app-hard.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "rm -rf build && cd ../frontend && npm run build && cp -r dist ../backend",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
