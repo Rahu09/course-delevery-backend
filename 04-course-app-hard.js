@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 const app = express();
 const cors = require('cors');
 
-const port = process.env.PORT
-const url = process.env.MONGODB_URI
-console.log(port,url);
+const port = 3000
+// const url = 
+// console.log(port,url);
 
 
 app.use(cors())
@@ -59,7 +59,7 @@ const authenticateJwt = (req, res, next) => {
 
 // Connect to MongoDB
 // DONT MISUSE THIS THANKYOU!!
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, dbName: "courses" });
+mongoose.connect('mongodb+srv://tiwarirahul0809:Hadies%4008@cluster0.mujrrn0.mongodb.net/courses', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "courses" });
 
 app.post('/api/admin/signup', (req, res) => {
   const { username, password } = req.body;
