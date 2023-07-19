@@ -159,5 +159,5 @@ app.get('/api/users/purchasedCourses', authenticateJwt, async (req, res) => {
     res.status(403).json({ message: 'User not found' });
   }
 });
-//change
+//changeeeee
 app.listen(port, () => console.log(`Server running on port ${port}`));
