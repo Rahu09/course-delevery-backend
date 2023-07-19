@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const app = express();
 const cors = require('cors');
+const path = require('path')
 
 const port = process.env.PORT
 const url = process.env.MONGODB_URI
@@ -164,5 +165,9 @@ app.get('/api/users/purchasedCourses', authenticateJwt, async (req, res) => {
     res.status(403).json({ message: 'User not found' });
   }
 });
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
+
 //changeeeee
 app.listen(port, () => console.log(`Server running on port ${port}`));
