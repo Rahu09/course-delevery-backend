@@ -7,6 +7,7 @@ const cors = require('cors');
 
 const port = process.env.PORT
 const url = process.env.MONGODB_URI
+console.log(port,url);
 
 
 app.use(cors())
