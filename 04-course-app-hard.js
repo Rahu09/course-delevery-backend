@@ -1,9 +1,13 @@
+require('dotenv').config()
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const app = express();
 const cors = require('cors');
-const port = process.env.PORT || 3000
+
+const port = process.env.PORT
+const url = process.env.MONGODB_URI
+
 
 app.use(cors())
 app.use(express.static('dist'))
@@ -54,7 +58,7 @@ const authenticateJwt = (req, res, next) => {
 
 // Connect to MongoDB
 // DONT MISUSE THIS THANKYOU!!
-mongoose.connect('mongodb+srv://tiwarirahul0809:Hadies%4008@cluster0.mujrrn0.mongodb.net/courses', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "courses" });
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, dbName: "courses" });
 
 app.post('/api/admin/signup', (req, res) => {
   const { username, password } = req.body;
