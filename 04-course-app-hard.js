@@ -2,7 +2,10 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const app = express();
+const cors = require('cors');
+const port = process.env.PORT || 3000
 
+app.use(cors())
 app.use(express.json());
 
 const SECRET = 'SECr3t';  // This should be in an environment variable in a real application
@@ -50,7 +53,7 @@ const authenticateJwt = (req, res, next) => {
 
 // Connect to MongoDB
 // DONT MISUSE THIS THANKYOU!!
-mongoose.connect('mongodb+srv://kirattechnologies:iRbi4XRDdM7JMMkl@cluster0.e95bnsi.mongodb.net/courses', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "courses" });
+mongoose.connect('mongodb+srv://tiwarirahul0809:Hadies%4008@cluster0.mujrrn0.mongodb.net/courses', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "courses" });
 
 app.post('/admin/signup', (req, res) => {
   const { username, password } = req.body;
@@ -156,26 +159,4 @@ app.get('/users/purchasedCourses', authenticateJwt, async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
-
-app.post("/admin/courses",validateAdmin,cors(corsOptions),upload.single("imageLink"),async (req, res) => {
-    const course = {
-      title: req.body.title,
-      description: req.body.description,
-      price: req.body.price,
-      imageLink: req.file.filename, // Use the filename of the uploaded image
-      published: req.body.published,
-    };
-
-    const createCourse = await Courses.create(course);
-
-    // Construct the URL of the uploaded image
-    const imageUrl = `http://localhost:3000/${req.file.filename}`;
-
-    return res.status(201).json({
-      message: "Course created successfully",
-      createCourse,
-      imageUrl: imageUrl, // Include the imageUrl in the response
-    });
-  }
-);
+app.listen(port, () => console.log(`Server running on port ${port}`));
