@@ -22,10 +22,22 @@ const courseSchema = new mongoose.Schema({
   published: Boolean
 });
 
+const chapterSchema = new mongoose.Schema({
+  html: String,
+  videoLink: String
+});
+
+const contentSchema = new mongoose.Schema({
+  id:String,
+  chapters: [chapterSchema]
+});
+
+
 // Define mongoose models
 const User = mongoose.model('User', userSchema);
 const Admin = mongoose.model('Admin', adminSchema);
 const Course = mongoose.model('Course', courseSchema);
+const Content = mongoose.model('Content', contentSchema);
 
 // Connect to MongoDB
 const connectDB = ()=>{
@@ -40,5 +52,6 @@ module.exports = {
   User,
   Admin,
   Course,
+  Content,
   connectDB
 }

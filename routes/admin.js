@@ -1,18 +1,18 @@
-const express =  require("express");
+const express = require("express");
 const jwt = require('jsonwebtoken');
-const  {Admin, Course }  =  require("../DB/data");
-const {authenticateJwt, SECRET} = require("../middleware/auth");
+const { Admin, Course, Content } = require("../DB/data");
+const { authenticateJwt, SECRET } = require("../middleware/auth");
 
 const router = express.Router()
 
 router.get("/me", authenticateJwt, async (req, res) => {
   const admin = await Admin.findOne({ username: req.user.username });
   if (!admin) {
-    res.status(403).json({msg: "Admin doesnt exist"})
+    res.status(403).json({ msg: "Admin doesnt exist" })
     return
   }
   res.json({
-      username: admin.username
+    username: admin.username
   })
 });
 
@@ -69,4 +69,37 @@ router.get('/course/:courseId', authenticateJwt, async (req, res) => {
   res.json({ course });
 });
 
+router.get('/course/:courseId/content', authenticateJwt, async (req, res) => {
+  const courseId = req.params.courseId;
+  const course = await Content.findOne({ id: courseId })
+  res.json(course)
+})
+router.post('/course/:courseId/content', authenticateJwt, async (req, res) => {
+  const courseId = req.params.courseId;
+  const course = await Content.findOne({ id: courseId })
+  if (course) {
+    res.json({ message: 'Course already exist' });
+  } else {
+    const content = new Content(req.body);
+    await content.save();
+    res.json({ message: 'Course created successfully', contrntId: content.id });
+  }
+
+})
+router.put('/course/:courseId/content', authenticateJwt, async (req, res) => {
+  const { courseId } = req.params;
+  const course = await Content.findOne({ id: courseId })
+
+  course.chapters.push(req.body);
+  const newCourse = await course.save();
+
+  if (newCourse) {
+    res.json({
+      message: 'Course updated successfully',
+      content: newCourse
+    });
+  } else {
+    res.status(404).json({ message: 'Course not found' });
+  }
+})
 module.exports = router
