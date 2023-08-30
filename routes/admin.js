@@ -1,10 +1,10 @@
 const express = require("express");
 const jwt = require('jsonwebtoken');
 const { Admin, Course, Content } = require("../DB/data");
-const { authenticateJwt, SECRET } = require("../middleware/auth");
+const { authenticateJwt, ADMINSECRET } = require("../middleware/auth");
 
 const router = express.Router()
-
+const SECRET = ADMINSECRET
 router.get("/me", authenticateJwt, async (req, res) => {
   const admin = await Admin.findOne({ username: req.user.username });
   if (!admin) {
@@ -25,7 +25,7 @@ router.post('/signup', (req, res) => {
       const obj = { username: username, password: password };
       const newAdmin = new Admin(obj);
       newAdmin.save();
-      const token = jwt.sign({ username, role: 'admin' }, SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ username, role: 'admin' }, SECRET, { expiresIn: '6h' });
       res.json({ message: 'Admin created successfully', token });
     }
   }

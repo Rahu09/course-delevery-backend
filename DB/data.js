@@ -23,6 +23,8 @@ const courseSchema = new mongoose.Schema({
 });
 
 const chapterSchema = new mongoose.Schema({
+  name:String,
+  description :String,
   html: String,
   videoLink: String
 });
