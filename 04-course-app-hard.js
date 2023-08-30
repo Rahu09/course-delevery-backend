@@ -5,6 +5,8 @@ const path = require('path')
 const adminRouter = require('./routes/admin')
 const userRouter = require('./routes/users')
 const {connectDB} = require('./DB/data')
+const cookieParser = require('cookie-parser')
+
 
 const app = express();
 
@@ -13,6 +15,7 @@ const port = process.env.PORT
 app.use(cors())
 app.use(express.static('dist'))
 app.use(express.json());
+app.use(cookieParser())
 
 app.use("/api/admin",adminRouter)
 app.use("/api/users",userRouter)

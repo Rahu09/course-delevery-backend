@@ -1,6 +1,6 @@
-const express =  require("express");
-const { User, Course, Content } =  require("../DB/data");
-const {authenticateJwt, USERSECRET} = require("../middleware/auth");
+const express = require("express");
+const { User, Course, Content } = require("../DB/data");
+const { authenticateJwt, USERSECRET } = require("../middleware/auth");
 const jwt = require('jsonwebtoken')
 
 const router = express.Router()
@@ -16,7 +16,13 @@ router.post('/signup', async (req, res) => {
     const newUser = new User({ username, password });
     await newUser.save();
     const token = jwt.sign({ username, role: 'user' }, SECRET, { expiresIn: '6h' });
-    res.json({ message: 'User created successfully', token });
+    res
+      .status(201)
+      .cookie("token", token, {
+        httpOnly: false,
+        maxAge: 60 * 60 * 1000
+      })
+      .json({ message: 'User created successfully' });
   }
 });
 
@@ -25,14 +31,20 @@ router.post('/login', async (req, res) => {
   const user = await User.findOne({ username, password });
   if (user) {
     const token = jwt.sign({ username, role: 'user' }, SECRET, { expiresIn: '6h' });
-    res.json({ message: 'Logged in successfully', token });
+    res
+      .status(201)
+      .cookie("token", token, {
+        httpOnly: false,
+        maxAge: 60 * 60 * 1000
+      })
+      .json({ message: 'Logged in successfully' });
   } else {
     res.status(403).json({ message: 'Invalid username or password' });
   }
 });
 
 router.get('/courses', authenticateJwt, async (req, res) => {
-  const courses = await Course.find({published: true});
+  const courses = await Course.find({ published: true });
   res.json({ courses });
 });
 

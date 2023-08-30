@@ -26,7 +26,13 @@ router.post('/signup', (req, res) => {
       const newAdmin = new Admin(obj);
       newAdmin.save();
       const token = jwt.sign({ username, role: 'admin' }, SECRET, { expiresIn: '6h' });
-      res.json({ message: 'Admin created successfully', token });
+      res
+        .status(201)
+        .cookie("token", token, {
+          httpOnly: false,
+          maxAge: 60 * 60 * 1000
+        })
+        .json({ message: 'Admin created successfully' });
     }
   }
   Admin.findOne({ username }).then(callback);
@@ -37,7 +43,13 @@ router.post('/login', async (req, res) => {
   const admin = await Admin.findOne({ username, password });
   if (admin) {
     const token = jwt.sign({ username, role: 'admin' }, SECRET, { expiresIn: '1h' });
-    res.json({ message: 'Logged in successfully', token });
+    res
+      .status(201)
+      .cookie("token", token, {
+        httpOnly: false,
+        maxAge: 60 * 60 * 1000
+      })
+      .json({ message: 'Logged in successfully' });
   } else {
     res.status(403).json({ message: 'Invalid username or password' });
   }
