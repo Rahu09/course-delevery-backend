@@ -1,5 +1,5 @@
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const url = process.env.MONGODB_URI
 
 // Define mongoose schemas
@@ -36,24 +36,16 @@ const contentSchema = new mongoose.Schema({
 
 
 // Define mongoose models
-const User = mongoose.model('User', userSchema);
-const Admin = mongoose.model('Admin', adminSchema);
-const Course = mongoose.model('Course', courseSchema);
-const Content = mongoose.model('Content', contentSchema);
+export const User = mongoose.model('User', userSchema);
+export const Admin = mongoose.model('Admin', adminSchema);
+export const Course = mongoose.model('Course', courseSchema);
+export const Content = mongoose.model('Content', contentSchema);
 
 // Connect to MongoDB
-const connectDB = ()=>{
+export const connectDB = ()=>{
   mongoose.connect(url, { 
-    useNewUrlParser: true, useUnifiedTopology: true, dbName: "courses" 
+    dbName: "courses" 
   })
   .then(()=>console.log('database connected'))
   .catch((e)=>console.log(e))
-}
-
-module.exports = {
-  User,
-  Admin,
-  Course,
-  Content,
-  connectDB
 }

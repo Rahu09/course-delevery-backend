@@ -1,12 +1,13 @@
-const express = require("express");
-const jwt = require('jsonwebtoken');
-const { Admin, Course, Content } = require("../DB/data");
-const { authenticateJwt, ADMINSECRET } = require("../middleware/auth");
+import express from "express";
+import jwt from 'jsonwebtoken';
+import { Admin, Course, Content } from "../DB/data";
+import { authenticateJwt, ADMINSECRET } from "../middleware/auth";
 
 const router = express.Router()
 const SECRET = ADMINSECRET
 router.get("/me", authenticateJwt, async (req, res) => {
-  const admin = await Admin.findOne({ username: req.user.username });
+  const { username } = req.headers
+  const admin = await Admin.findOne({ username: username });
   if (!admin) {
     res.status(403).json({ msg: "Admin doesnt exist" })
     return
@@ -18,14 +19,14 @@ router.get("/me", authenticateJwt, async (req, res) => {
 
 router.post('/signup', (req, res) => {
   const { username, password } = req.body;
-  function callback(admin) {
+  function callback(admin: any): void {
     if (admin) {
       res.status(403).json({ message: 'Admin already exists' });
     } else {
       const obj = { username: username, password: password };
       const newAdmin = new Admin(obj);
       newAdmin.save();
-      const token = jwt.sign({ username, role: 'admin' }, SECRET, { expiresIn: '6h' });
+      const token = jwt.sign({ username: username, role: 'admin' }, SECRET, { expiresIn: '6h' });
       res
         .status(201)
         .cookie("token", token, {
@@ -102,16 +103,23 @@ router.put('/course/:courseId/content', authenticateJwt, async (req, res) => {
   const { courseId } = req.params;
   const course = await Content.findOne({ id: courseId })
 
-  course.chapters.push(req.body);
-  const newCourse = await course.save();
-
-  if (newCourse) {
-    res.json({
-      message: 'Course updated successfully',
-      content: newCourse
-    });
-  } else {
+  if (course === null) {
     res.status(404).json({ message: 'Course not found' });
   }
+  else {
+    course.chapters.push(req.body);
+
+    const newCourse = await course.save();
+
+    if (newCourse) {
+      res.json({
+        message: 'Course updated successfully',
+        content: newCourse
+      });
+    } else {
+      res.status(404).json({ message: 'Course not found' });
+    }
+  }
+
 })
-module.exports = router
+export default router
