@@ -23,4 +23,4 @@ app.use("/api/users", users_1.default);
 app.get("*", (req, res) => {
     res.sendFile(path_1.default.join(__dirname, "dist/index.html"));
 });
-app.listen(30000, () => console.log(`Server running on port 3000`));
+app.listen(3000, () => console.log(`Server running on port 3000`));
