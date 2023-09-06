@@ -7,8 +7,8 @@ exports.authenticateJwt = exports.USERSECRET = exports.ADMINSECRET = void 0;
 require("dotenv/config");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 // const router = express.Router()
-exports.ADMINSECRET = process.env.ADMINSECRET;
-exports.USERSECRET = process.env.USERSECRET;
+exports.ADMINSECRET = "ADMINSECr3t";
+exports.USERSECRET = "USERSECr3t";
 const authenticateJwt = (req, res, next) => {
     // console.log(req.baseUrl);
     const token = req.cookies.token;
@@ -18,7 +18,8 @@ const authenticateJwt = (req, res, next) => {
         SECRET = exports.ADMINSECRET;
     }
     else if (baseUrl === "/api/users") {
-        SECRET = exports.USERSECRET;
+        SECRET = exports.USERSECRET = exports.USERSECRET;
+        ("");
     }
     else {
         res.sendStatus(401);

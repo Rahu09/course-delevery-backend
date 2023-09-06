@@ -1,17 +1,16 @@
-
-import mongoose from 'mongoose';
-const url = process.env.MONGODB_URI
+import mongoose from "mongoose";
+// const url = process.env.MONGODB_URI
 
 // Define mongoose schemas
 const userSchema = new mongoose.Schema({
-  username: {type: String},
+  username: { type: String },
   password: String,
-  purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }]
+  purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
 });
 
 const adminSchema = new mongoose.Schema({
   username: String,
-  password: String
+  password: String,
 });
 
 const courseSchema = new mongoose.Schema({
@@ -19,33 +18,36 @@ const courseSchema = new mongoose.Schema({
   description: String,
   price: Number,
   imageLink: String,
-  published: Boolean
+  published: Boolean,
 });
 
 const chapterSchema = new mongoose.Schema({
-  name:String,
-  description :String,
+  name: String,
+  description: String,
   html: String,
-  videoLink: String
+  videoLink: String,
 });
 
 const contentSchema = new mongoose.Schema({
-  id:String,
-  chapters: [chapterSchema]
+  id: String,
+  chapters: [chapterSchema],
 });
 
-
 // Define mongoose models
-export const User = mongoose.model('User', userSchema);
-export const Admin = mongoose.model('Admin', adminSchema);
-export const Course = mongoose.model('Course', courseSchema);
-export const Content = mongoose.model('Content', contentSchema);
+export const User = mongoose.model("User", userSchema);
+export const Admin = mongoose.model("Admin", adminSchema);
+export const Course = mongoose.model("Course", courseSchema);
+export const Content = mongoose.model("Content", contentSchema);
 
 // Connect to MongoDB
-export const connectDB = ()=>{
-  mongoose.connect(url, { 
-    dbName: "courses" 
-  })
-  .then(()=>console.log('database connected'))
-  .catch((e)=>console.log(e))
-}
+export const connectDB = () => {
+  mongoose
+    .connect(
+      "mongodb+srv://tiwarirahul0809:Hadies%4008@cluster0.mujrrn0.mongodb.net/courses",
+      {
+        dbName: "courses",
+      }
+    )
+    .then(() => console.log("database connected"))
+    .catch((e) => console.log(e));
+};
