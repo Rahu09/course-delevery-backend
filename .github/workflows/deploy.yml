@@ -1,0 +1,23 @@
+name: deploy course delevery
+
+on:
+  push:
+    branches: main
+
+jobs:
+  deploy:
+    runs-on: ubuntu@latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH and deploy
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+        run: |
+          echo "$SSH_PRIVATE_KEY" > keyfile
+          chmod 600 keyfile
+          mkdir -p ~/.ssh
+          cp known_hosts ~/.ssh/known_hosts
+          ssh -t -i keyfile ubuntu@ec2-54-174-171-90.compute-1.amazonaws.com "sudo bash /home/ubuntu/course-delevery-backend/deploy.sh"
