@@ -13,7 +13,8 @@
     "typescript": "^5.2.2"
   },
   "scripts": {
-    "start": "npx tsc -b && node build/04-course-app-hard.js",
+    "start": "node build/04-course-app-hard.js",
+    "build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "npx tsc && rm -rf dist && cd ../frontend && npm run build && cp -r dist ../backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push origin main"
