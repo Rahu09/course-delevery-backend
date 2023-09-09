@@ -2,7 +2,11 @@ name: deploy course delevery
 
 on:
   push:
-    branches: main
+    paths:
+      - "build/**"
+      - "dist/**"
+    branches:
+      - main
 
 jobs:
   deploy:

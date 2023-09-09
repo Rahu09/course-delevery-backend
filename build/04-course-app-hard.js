@@ -20,7 +20,6 @@ app.use((0, cookie_parser_1.default)());
 app.use("/api/admin", admin_1.default);
 app.use("/api/users", users_1.default);
 (0, data_1.connectDB)();
-//hiii
 // lets check deployment
 app.get("*", (req, res) => {
     res.sendFile(path_1.default.join(__dirname, "dist/index.html"));
