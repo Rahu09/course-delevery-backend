@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
-// const port = process.env.PORT
+const port = process.env.PORT;
 
 app.use(cors());
 app.use(express.static("dist"));
@@ -25,4 +25,4 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "dist/index.html"));
 });
 
-app.listen(3005, () => console.log(`Server running on port 3005`));
+app.listen(port, () => console.log(`Server running on port ${port}`));

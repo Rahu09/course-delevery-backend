@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-// const url = process.env.MONGODB_URI
+const url = process.env.MONGODB_URI;
 
 // Define mongoose schemas
 const userSchema = new mongoose.Schema({
@@ -42,12 +42,9 @@ export const Content = mongoose.model("Content", contentSchema);
 // Connect to MongoDB
 export const connectDB = () => {
   mongoose
-    .connect(
-      "mongodb+srv://tiwarirahul0809:Hadies%4008@cluster0.mujrrn0.mongodb.net/courses",
-      {
-        dbName: "courses",
-      }
-    )
+    .connect(`${url}`, {
+      dbName: "courses",
+    })
     .then(() => console.log("database connected"))
     .catch((e) => console.log(e));
 };

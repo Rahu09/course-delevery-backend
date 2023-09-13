@@ -4,8 +4,8 @@ import jwt from "jsonwebtoken";
 
 // const router = express.Router()
 
-export let ADMINSECRET = "ADMINSECr3t";
-export let USERSECRET = "USERSECr3t";
+export let ADMINSECRET = process.env.ADMINSECRET;
+export let USERSECRET = process.env.USERSECRET;
 
 export const authenticateJwt = (
   req: Request,
